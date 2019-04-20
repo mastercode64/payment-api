@@ -1,9 +1,13 @@
 package com.mastercode.paymentapi.exception;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
 
 @ControllerAdvice
 public class CustomExceptionHandler {
@@ -67,6 +72,27 @@ public class CustomExceptionHandler {
 				request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(error);
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<?> validationErrorHandler(ConstraintViolationException ex, HttpServletRequest request){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        Set<String> messages = new HashSet<>();
+
+        messages.addAll(ex.getConstraintViolations().stream()
+                .map(error -> error.getPropertyPath() + " : " + error.getMessage())
+                .collect(Collectors.toList()));
+        
+        StandardError error =	new StandardError(
+				System.currentTimeMillis(),
+				status.value(),
+				"Validation error",
+				messages,
+				request.getRequestURI());
+        
+        return ResponseEntity.status(status).body(error);
+        
 	}
 	
 	@ExceptionHandler(InvalidFormatException.class)
