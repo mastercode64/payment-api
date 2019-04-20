@@ -13,6 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
 @ControllerAdvice
 public class CustomExceptionHandler {
 	
@@ -62,6 +64,20 @@ public class CustomExceptionHandler {
 				status.value(),
 				"Validation error",
 				errors,
+				request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(error);
+	}
+	
+	@ExceptionHandler(InvalidFormatException.class)
+	public ResponseEntity<?> invalidFormatHandler(InvalidFormatException ex, HttpServletRequest request){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		StandardError error =	new StandardError(
+				System.currentTimeMillis(),
+				status.value(),
+				"Invalid Format",
+				ex.getMessage(),
 				request.getRequestURI());
 		
 		return ResponseEntity.status(status).body(error);
