@@ -1,7 +1,5 @@
 package com.mastercode.paymentapi.domain.entity;
 
-import java.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,11 +8,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class CreditCard {
 
 	@Id
@@ -28,9 +28,22 @@ public class CreditCard {
 	private String number;
 	
 	@NotNull
-	private LocalDate expirationDate;
+	private String expirationDate;
 	
 	@NotBlank
 	private String cvv;
+
+	public CreditCard(
+			String holderName,
+			String number,
+			String expirationDate,
+			String cvv) {
+		this.holderName = holderName;
+		this.number = number;
+		this.expirationDate = expirationDate;
+		this.cvv = cvv;
+	}
+	
+	
 	
 }
