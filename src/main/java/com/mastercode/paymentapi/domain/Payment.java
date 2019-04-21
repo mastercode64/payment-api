@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -38,7 +40,8 @@ public abstract class Payment {
 	private PaymentStatus status = PaymentStatus.WAITING;
 
 	@NotNull
-	@Min(value = 0)
+	@Digits(fraction = 2, integer = 20)
+	@DecimalMin(value = "0.01")
 	private BigDecimal value;
 
 }
