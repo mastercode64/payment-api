@@ -1,7 +1,5 @@
 package com.mastercode.paymentapi.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,25 +11,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mastercode.paymentapi.domain.entity.Payment;
-import com.mastercode.paymentapi.service.PaymentService;
+import com.mastercode.paymentapi.domain.BoletoPayment;
+import com.mastercode.paymentapi.domain.CreditCardPayment;
+import com.mastercode.paymentapi.domain.PaymentType;
+import com.mastercode.paymentapi.service.BoletoPaymentService;
+import com.mastercode.paymentapi.service.CreditCardPaymentService;
 
 @RestController
 @RequestMapping(path = "/payments", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PaymentController {
 
 	@Autowired
-	private PaymentService paymentService;
+	private BoletoPaymentService boletoPaymentService;
+
+	@Autowired
+	private CreditCardPaymentService creditCardPaymentService;
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Long id) {
-		return new ResponseEntity<Payment>(paymentService.findPayment(id), HttpStatus.OK);
+	public ResponseEntity<?> findById(@PathVariable Long id, @RequestBody PaymentType paymentType) {
+		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
-	@PostMapping
-	public ResponseEntity<?> createPayment(@RequestBody @Valid Payment payment) {
-		payment = paymentService.createPayment(payment);
-		//return new ResponseEntity<Payment>(payment, HttpStatus.CREATED);
+	@PostMapping(path = "/boleto")
+	public ResponseEntity<?> createBoletoPayment(@RequestBody BoletoPayment payment) {
+		payment = boletoPaymentService.createPayment(payment);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@PostMapping(path = "/credit-card")
+	public ResponseEntity<?> createCreditCardPayment(@RequestBody CreditCardPayment payment) {
+		payment = creditCardPaymentService.createPayment(payment);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
