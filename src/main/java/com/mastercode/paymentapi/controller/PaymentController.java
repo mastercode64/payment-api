@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mastercode.paymentapi.domain.BoletoPayment;
@@ -28,9 +28,14 @@ public class PaymentController {
 	@Autowired
 	private CreditCardPaymentService creditCardPaymentService;
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> findById(@PathVariable Long id, @RequestBody PaymentType paymentType) {
-		return new ResponseEntity<>(null, HttpStatus.OK);
+	@GetMapping
+	public ResponseEntity<?> findById(@RequestParam Long id, @RequestParam PaymentType type) {
+		if (type.equals(PaymentType.BOLETO)) {
+			return new ResponseEntity<>(boletoPaymentService.findPayment(id), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(creditCardPaymentService.findPayment(id), HttpStatus.OK);
+		}
+
 	}
 
 	@PostMapping(path = "/boleto")
