@@ -35,7 +35,7 @@ public abstract class Payment {
 	private Buyer buyer;
 	
 	@Enumerated(EnumType.STRING)
-	private PaymentStatus status;
+	private PaymentStatus status = PaymentStatus.WAITING;
 
 	@NotNull
 	@Min(value = 0)
