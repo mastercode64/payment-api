@@ -108,4 +108,18 @@ public class CustomExceptionHandler {
 		
 		return ResponseEntity.status(status).body(error);
 	}
+	
+	@ExceptionHandler(InvalidDateFormatException.class)
+	public ResponseEntity<?> invalidDateFormatHandler(InvalidDateFormatException ex, HttpServletRequest request){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		StandardError error =	new StandardError(
+				System.currentTimeMillis(),
+				status.value(),
+				"Invalid Date Format",
+				ex.getMessage(),
+				request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(error);
+	}
 }
