@@ -1,4 +1,4 @@
-package com.mastercode.paymentapi.domain.entity;
+package com.mastercode.paymentapi.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
