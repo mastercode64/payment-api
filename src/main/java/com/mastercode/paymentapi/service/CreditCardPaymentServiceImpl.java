@@ -1,15 +1,11 @@
 package com.mastercode.paymentapi.service;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mastercode.paymentapi.domain.CreditCardPayment;
-import com.mastercode.paymentapi.domain.PaymentStatus;
 import com.mastercode.paymentapi.exception.ResourceNotFoundException;
 import com.mastercode.paymentapi.repository.CreditCardPaymentRepository;
-import com.mastercode.paymentapi.util.LocalDateUtils;
 
 @Service
 public class CreditCardPaymentServiceImpl implements CreditCardPaymentService {
@@ -17,13 +13,16 @@ public class CreditCardPaymentServiceImpl implements CreditCardPaymentService {
 	@Autowired
 	private CreditCardPaymentRepository creditCardPaymentRepository;
 
+	@Autowired
+	private BuyerService buyerService;
+
+	@Autowired
+	private CreditCardService creditCardService;
+
 	@Override
 	public CreditCardPayment createPayment(CreditCardPayment payment) {
-		payment.setStatus(PaymentStatus.WAITING);
-		LocalDate expirationDate = LocalDateUtils.stringMonthYearToLocalDate(payment.getExpiration());
-		payment.setExpirationDate(expirationDate);
-		
-		
+		buyerService.identifyBuyer(payment);
+		creditCardService.identifyCreditCard(payment);
 		return creditCardPaymentRepository.save(payment);
 	}
 
