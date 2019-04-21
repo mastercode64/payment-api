@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mastercode.paymentapi.domain.BoletoPayment;
-import com.mastercode.paymentapi.domain.PaymentStatus;
 import com.mastercode.paymentapi.exception.ResourceNotFoundException;
 import com.mastercode.paymentapi.repository.BoletoPaymentRepository;
 
@@ -16,11 +15,13 @@ public class BoletoPaymentServiceImpl implements BoletoPaymentService {
 	@Autowired
 	private BoletoPaymentRepository boletoPaymentRepository;
 
+	@Autowired
+	private BuyerService buyerService;
+
 	@Override
 	public BoletoPayment createPayment(BoletoPayment payment) {
-		String randomCode = UUID.randomUUID().toString();
-		payment.setBoletoNumber(randomCode);
-		payment.setStatus(PaymentStatus.WAITING);
+		buyerService.identifyBuyer(payment);
+		payment.setBoletoNumber(UUID.randomUUID().toString());
 		return boletoPaymentRepository.save(payment);
 	}
 
