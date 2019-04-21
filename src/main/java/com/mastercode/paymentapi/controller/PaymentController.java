@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mastercode.paymentapi.domain.BoletoPayment;
 import com.mastercode.paymentapi.domain.CreditCardPayment;
 import com.mastercode.paymentapi.domain.PaymentType;
+import com.mastercode.paymentapi.response.BoletoCreationResponse;
 import com.mastercode.paymentapi.service.BoletoPaymentService;
 import com.mastercode.paymentapi.service.CreditCardPaymentService;
 
@@ -35,7 +36,8 @@ public class PaymentController {
 	@PostMapping(path = "/boleto")
 	public ResponseEntity<?> createBoletoPayment(@RequestBody BoletoPayment payment) {
 		payment = boletoPaymentService.createPayment(payment);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		BoletoCreationResponse response = new BoletoCreationResponse(payment.getBoletoNumber());
+		return new ResponseEntity<BoletoCreationResponse>(response, HttpStatus.CREATED);
 	}
 
 	@PostMapping(path = "/credit-card")
