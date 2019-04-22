@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mastercode.paymentapi.domain.CreditCard;
 import com.mastercode.paymentapi.domain.CreditCardPayment;
+import com.mastercode.paymentapi.exception.ValidationErrorException;
 import com.mastercode.paymentapi.repository.CreditCardRepository;
 import com.mastercode.paymentapi.util.LocalDateUtils;
 
@@ -19,6 +20,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 	@Override
 	public void identifyCreditCard(CreditCardPayment payment) {
 		setExpirationDate(payment);
+		checkExpirationDate(payment);
 		CreditCard card = createIfNotExistsByNumber(payment.getCreditCard());
 		payment.setCreditCard(card);
 	}
@@ -34,7 +36,15 @@ public class CreditCardServiceImpl implements CreditCardService {
 	
 	private void setExpirationDate(CreditCardPayment payment) {
 		LocalDate expirationDate = LocalDateUtils.stringMonthYearToLocalDate(payment.getCreditCard().getExpiration());
+		expirationDate = expirationDate.withDayOfMonth(expirationDate.lengthOfMonth());
 		payment.getCreditCard().setExpirationDate(expirationDate);
+	}
+	
+	private void checkExpirationDate(CreditCardPayment payment) {
+		LocalDate expirationDate = payment.getCreditCard().getExpirationDate();
+		if(expirationDate.isBefore(LocalDate.now())) {
+			throw new ValidationErrorException("Credit card is expired");
+		}
 	}
 
 }
