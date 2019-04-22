@@ -22,6 +22,7 @@ public class CreditCardPaymentServiceImpl implements CreditCardPaymentService {
 	public CreditCardPayment createPayment(CreditCardPayment payment) {
 		buyerService.identifyBuyer(payment);
 		creditCardService.identifyCreditCard(payment);
+		payment.processPayment();
 		return creditCardPaymentRepository.save(payment);
 	}
 

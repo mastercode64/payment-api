@@ -1,7 +1,5 @@
 package com.mastercode.paymentapi.service;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ public class BoletoPaymentServiceImpl implements BoletoPaymentService {
 	@Override
 	public BoletoPayment createPayment(BoletoPayment payment) {
 		buyerService.identifyBuyer(payment);
-		payment.setBoletoNumber(UUID.randomUUID().toString());
+		payment.processPayment();
 		return boletoPaymentRepository.save(payment);
 	}
 

@@ -42,5 +42,7 @@ public abstract class Payment {
 	@Digits(fraction = 2, integer = 20)
 	@DecimalMin(value = "0.01")
 	private BigDecimal value;
+	
+	abstract void processPayment();
 
 }
