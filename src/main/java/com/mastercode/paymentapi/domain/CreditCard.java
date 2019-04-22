@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -41,9 +43,13 @@ public class CreditCard {
 
 	@NotBlank
 	@Column(unique = true)
+	@Size(min = 13, max = 19)
+	@Pattern(regexp = "[0-9]+", message = "Invalid credit card number")
 	private String number;
 
 	@NotBlank
+	@Size(min = 3, max = 3)
+	@Pattern(regexp = "[0-9]+", message = "Invalid cvv code")
 	private String cvv;
 
 }
