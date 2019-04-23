@@ -29,5 +29,17 @@ public class LocalDateUtils {
 		}
 		return date;
 	}
+	
+	public static String localDateToString(LocalDate date) {
+		/**
+		 * Converts LocalDate to string using format 'MM/YYYY'
+		 */
+		String month = ((Integer) date.getMonthValue()).toString();
+		month = month.length() == 1 ? "0" + month : month;
+		
+		String year = ((Integer) date.getYear()).toString();
+		
+		return month + "/" + year;
+	}
 
 }
