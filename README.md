@@ -26,6 +26,9 @@ spring.datasource.password=
 - Choose the Spring Boot Application file PaymentapiApplication.java
 - Right Click on the file and Run as Java Application
 
+### API documentation
+[Postman](https://documenter.getpostman.com/view/3454571/S1EWMu2T)
+
 ## Built With
 * [Eclipse](https://www.eclipse.org/) - IDE
 * [Maven](https://maven.apache.org/) - Dependency Management
