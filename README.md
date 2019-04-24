@@ -25,3 +25,9 @@ spring.datasource.password=
 ### Running project
 - Choose the Spring Boot Application file PaymentapiApplication.java
 - Right Click on the file and Run as Java Application
+
+## Built With
+* [Eclipse](https://www.eclipse.org/) - IDE
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [Spring](https://spring.io/) - Spring framework, JPA, Boot
+* [Lombok Project](https://projectlombok.org/setup/eclipse) - Getters and Setters generator
