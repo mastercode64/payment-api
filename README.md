@@ -1,5 +1,6 @@
 # Payment-api challenge
 Simple api simulating the creation of payments
+
 ## Entity mapping
 ![Diagram](./diagram.png)
 
