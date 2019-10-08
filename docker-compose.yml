@@ -16,7 +16,9 @@ services:
   mysql:
     image: mysql:5.7.27
     container_name: mysql
-    command: --init-file /database-init/setup-database.sql
+    volumes:
+      - ./scripts/setup-database.sql:/docker-entrypoint-initdb.d/setup-database.sql
+    restart: always
     ports:
       - "3306:3306"
     environment:

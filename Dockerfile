@@ -1,11 +1,13 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
+WORKDIR /app
+
 EXPOSE 8080
+
+COPY ./target/payment-api.jar /app/payment-api.jar
 
 ENV TIMEZONE=America/Sao_Paulo
 
-# Add the application's jar to the container
-ADD target/payment-api.jar payment-api.jar
+RUN sh -c 'touch /app/payment-api.jar' && echo "${TIMEZONE}" > /etc/timezone
 
-# Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/payment-api.jar"]
+CMD java -Xmx2g -Dspring.profiles.active=development -jar payment-api.jar
