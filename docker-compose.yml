@@ -14,8 +14,9 @@ services:
       - mysql
 
   mysql:
-    image: mysql:5.7.22
+    image: mysql:5.7.27
     container_name: mysql
+    command: --init-file /database-init/setup-database.sql
     ports:
       - "3306:3306"
     environment:
